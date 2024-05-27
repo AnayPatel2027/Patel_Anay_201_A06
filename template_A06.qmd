@@ -103,6 +103,12 @@ Extract the value `8162` (LeBron James points) in 2 different ways:
 
 ```{r}
 
+player_info[[2]][[4]]
+
+player_info$LJ[[4]]
+
+
+
 ```
 
 
@@ -113,6 +119,14 @@ Add a new named element to the end of each player's list called `height`. The he
 Print the `player_info` list to prove you were successful.
 
 ```{r}
+
+height <- c(78,81,78,86,85)
+
+for(i in 1:length(player_info)){
+  player_info[[i]]$"height" <- height[i]
+}
+
+player_info
 
 ```
 
@@ -133,6 +147,18 @@ Note: this must still run correctly even if the values were to change or if anot
 
 ```{r}
 
+points_per_game <- list()
+
+
+
+for(i in 1:length(player_info)){
+  points_per_game <- append(points_per_game, player_info[[i]]$points / player_info[[i]]$games_played)
+}
+
+names(points_per_game) <- c("MJ", "LJ", "KB", "KA", "SO")
+
+points_per_game
+
 ```
 
 
@@ -143,6 +169,17 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
+
+
+rounded_points_per_game <- c()
+
+
+for(i in points_per_game){
+  rounded_points_per_game <- append(rounded_points_per_game, round(i, digits = 2))
+}
+
+print(rounded_points_per_game)
+
 
 ```
 
@@ -164,6 +201,7 @@ ie: 91 rounds to 90; 173 rounds to 200; 1450 rounds to 1000
 Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a row/col.
 
 ```{r}
+
 
 ```
 
@@ -237,6 +275,8 @@ Example: The number 312 would return 6 (3 + 1 + 2)
 Run your function with 935068.
 
 ```{r}
+
+
 
 ```
 
