@@ -105,7 +105,7 @@ Extract the value `8162` (LeBron James points) in 2 different ways:
 
 player_info[[2]][[4]]
 
-player_info$LJ[[4]]
+player_info$LJ$points
 
 
 
@@ -120,10 +120,10 @@ Print the `player_info` list to prove you were successful.
 
 ```{r}
 
-height <- c(78,81,78,86,85)
+height <- c(78,81,78,86,85) #make vector with respective heights
 
 for(i in 1:length(player_info)){
-  player_info[[i]]$"height" <- height[i]
+  player_info[[i]]$"height" <- height[i] #add respective height to player_info
 }
 
 player_info
@@ -152,10 +152,10 @@ points_per_game <- list()
 
 
 for(i in 1:length(player_info)){
-  points_per_game <- append(points_per_game, player_info[[i]]$points / player_info[[i]]$games_played)
+  points_per_game <- append(points_per_game, player_info[[i]]$points / player_info[[i]]$games_played) #append the points per game value to the new list points_per_game
 }
 
-names(points_per_game) <- c("MJ", "LJ", "KB", "KA", "SO")
+names(points_per_game) <- c("MJ", "LJ", "KB", "KA", "SO") #add names to the list
 
 points_per_game
 
@@ -171,7 +171,7 @@ Store the output as a vector and print the results.
 ```{r}
 
 
-rounded_points_per_game <- sapply(points_per_game, function(x) round(x,2))
+rounded_points_per_game <- sapply(points_per_game, function(x) round(x,2)) #using function(x) allows you to add inputs to the function where x represents the list/value that is being rounded in this case
 
 rounded_points_per_game
 
@@ -197,7 +197,7 @@ Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a r
 
 ```{r}
 
-mat_rand <- apply(mat_rand, MARGIN = 1:2, function(x) signif(x, 1))
+mat_rand <- apply(mat_rand, MARGIN = 1:2, function(x) signif(x, 1))#using function(x) allows you to add inputs to the function where x represents the list/value that is being rounded to the 1st significant digit in this case
 mat_rand
 
 ```
@@ -222,33 +222,17 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
 
-```{r}
 
-temps <- max_temps[,3:14]
-temps <- lapply(temps, as.numeric)
-av_temp <- list()
-
-
-for(i in 1:length(temps)){
-  av_temp <- append(av_temp, mean(temps[[i]]))
-}
-
-
-names(av_temp) <- c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
-
-av_temp
-
-```
 ```{r}
 
 av_temps <- c()
 
 for(i in 3:ncol(max_temps)){
-  av_temps <- append(av_temps, mean(unlist(max_temps[,i])))
+  av_temps <- append(av_temps, mean(unlist(max_temps[,i]))) #because the values in the data frame are type list, the unlist function needs to be applied to be able to apply the mean function to the individual vectors of the columns of max_temps
 }
 
 
-names(av_temps) <-  c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
+names(av_temps) <-  c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC") #add names to the values in the vector
 
 av_temps
 
@@ -295,13 +279,14 @@ Note: This code should still run successfully even if the numbers were to change
 med_temp <- c()
 
 for(i in 1:nrow(CO_df)){
-  med_temp <- append(med_temp, median(as.numeric(CO_df[i, 3:14])))
+  med_temp <- append(med_temp, median(as.numeric(CO_df[i, 3:14]))) #as.numeric is used in this case in order to convert the values in the data frame to their numeric version to apply the median function
 }
 
-
+#find the max and min values' indices of med_temp
 max_med <- which.max(med_temp)
 min_med <- which.min(med_temp)
 
+#print the respective statement referencing the values and the years of max and minimum median temperatures
 print(paste0("The maximum median annual temperature of ", med_temp[max_med], " occurred in ", CO_df[max_med,2], " and the minimum median annual temperature of ", med_temp[min_med], " occurred in ", CO_df[min_med,2], "."))
 
 
@@ -319,12 +304,11 @@ Run your function with 935068.
 ```{r}
 
 num_sum <- function(num){
-  sum = 0
   
   if(num == 0){ #base case
     return(0)
   } else {#recursive case
-    sum <- sum + (num%%10 + num_sum(num%/%10))
+    sum <- (num%%10 + num_sum(num%/%10)) # Adds the value of each digit by first obtaining the last digit, and then using recursion to complete the function again with the truncated version of the number divided by 10(this removes the last digit so that the value of the next digit from the end can be added). This process is repeated through the whole number
     return(sum)
   }
 }
