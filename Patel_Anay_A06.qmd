@@ -171,14 +171,9 @@ Store the output as a vector and print the results.
 ```{r}
 
 
-rounded_points_per_game <- c()
+rounded_points_per_game <- sapply(points_per_game, function(x) round(x,2))
 
-
-for(i in points_per_game){
-  rounded_points_per_game <- append(rounded_points_per_game, round(i, digits = 2))
-}
-
-print(rounded_points_per_game)
+rounded_points_per_game
 
 
 ```
@@ -202,6 +197,8 @@ Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a r
 
 ```{r}
 
+mat_rand <- apply(mat_rand, MARGIN = 1:2, function(x) signif(x, 1))
+mat_rand
 
 ```
 
@@ -227,6 +224,34 @@ Calculate the average temperature for each month across the whole data frame (us
 
 ```{r}
 
+temps <- max_temps[,3:14]
+temps <- lapply(temps, as.numeric)
+av_temp <- list()
+
+
+for(i in 1:length(temps)){
+  av_temp <- append(av_temp, mean(temps[[i]]))
+}
+
+
+names(av_temp) <- c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
+
+av_temp
+
+```
+```{r}
+
+av_temps <- c()
+
+for(i in 3:ncol(max_temps)){
+  av_temps <- append(av_temps, mean(unlist(max_temps[,i])))
+}
+
+
+names(av_temps) <-  c("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
+
+av_temps
+
 ```
 
 
@@ -241,6 +266,10 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
+
+CO_df <- max_temps[max_temps$state == "CO",]
+OH_df <- max_temps[max_temps$state == "OH",]
+VA_df <- max_temps[max_temps$state == "VA",]
 
 ```
 
@@ -263,6 +292,19 @@ Note: This code should still run successfully even if the numbers were to change
 
 ```{r}
 
+med_temp <- c()
+
+for(i in 1:nrow(CO_df)){
+  med_temp <- append(med_temp, median(as.numeric(CO_df[i, 3:14])))
+}
+
+
+max_med <- which.max(med_temp)
+min_med <- which.min(med_temp)
+
+print(paste0("The maximum median annual temperature of ", med_temp[max_med], " occurred in ", CO_df[max_med,2], " and the minimum median annual temperature of ", med_temp[min_med], " occurred in ", CO_df[min_med,2], "."))
+
+
 ```
 
 
@@ -276,6 +318,19 @@ Run your function with 935068.
 
 ```{r}
 
+num_sum <- function(num){
+  sum = 0
+  
+  if(num == 0){ #base case
+    return(0)
+  } else {#recursive case
+    sum <- sum + (num%%10 + num_sum(num%/%10))
+    return(sum)
+  }
+}
+
+
+num_sum(935068)
 
 
 ```
